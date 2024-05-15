@@ -30,7 +30,7 @@ function createBookPreview(fragment, slicedObject){            //CreateBookPrevi
     document.querySelector('[data-list-items]').appendChild(fragment)
 }
 
-function createObjectEntries(objectWithEntries, fragment){
+function createObjectEntries(objectWithEntries, fragment){            // refactor the for loop to use it multiple times withput repetiton
 
     for (const [id, name] of Object.entries(objectWithEntries)) {
         const element = document.createElement('option')
@@ -46,7 +46,8 @@ const firstGenreElement = document.createElement('option')
 firstGenreElement.value = 'any'
 firstGenreElement.innerText = 'All Genres'
 genreHtml.appendChild(firstGenreElement)
-
+//use createObject entries function
+createObjectEntries(genres,genreHtml);
 
 
 document.querySelector('[data-search-genres]').appendChild(genreHtml)
@@ -57,12 +58,10 @@ firstAuthorElement.value = 'any'
 firstAuthorElement.innerText = 'All Authors'
 authorsHtml.appendChild(firstAuthorElement)
 
-for (const [id, name] of Object.entries(authors)) {
-    const element = document.createElement('option')
-    element.value = id
-    element.innerText = name
-    authorsHtml.appendChild(element)
-}
+//use createObject entries function
+createObjectEntries(authors,authorsHtml);
+
+
 
 document.querySelector('[data-search-authors]').appendChild(authorsHtml)
 
