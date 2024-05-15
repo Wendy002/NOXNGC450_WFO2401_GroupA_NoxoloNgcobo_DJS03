@@ -4,28 +4,30 @@ let page = 1;
 let matches = books
 
 const starting = document.createDocumentFragment()
+createBookPreview(starting)       //use the createBookPreview 
 
-for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-    const element = document.createElement('button')
-    element.classList = 'preview'
-    element.setAttribute('data-preview', id)
-
-    element.innerHTML = `
-        <img
-            class="preview__image"
-            src="${image}"
-        />
-        
-        <div class="preview__info">
-            <h3 class="preview__title">${title}</h3>
-            <div class="preview__author">${authors[author]}</div>
-        </div>
-    `
-
-    starting.appendChild(element)
+function createBookPreview(fragment){            //CreateBookPreview function
+    for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {              
+        const element = document.createElement('button')
+        element.classList = 'preview'
+        element.setAttribute('data-preview', id)
+    
+        element.innerHTML = `
+            <img
+                class="preview__image"
+                src="${image}"
+            />
+            
+            <div class="preview__info">
+                <h3 class="preview__title">${title}</h3>
+                <div class="preview__author">${authors[author]}</div>
+            </div>
+        `
+    
+        fragment.appendChild(element)
+    }
+    document.querySelector('[data-list-items]').appendChild(fragment)
 }
-
-document.querySelector('[data-list-items]').appendChild(starting)
 
 const genreHtml = document.createDocumentFragment()
 const firstGenreElement = document.createElement('option')
