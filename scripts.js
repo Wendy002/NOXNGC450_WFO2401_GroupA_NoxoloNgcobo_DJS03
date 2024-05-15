@@ -148,9 +148,10 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     }
 
     document.querySelector('[data-list-items]').innerHTML = ''
-    const newItems = document.createDocumentFragment()
+    const newItems = document.createDocumentFragment();
+    const resultSlicedObject = result.slice(0, BOOKS_PER_PAGE);
     // replace the for loop  for newItems , use the createBookPreview
-    createBookPreview(newItems, result);
+    createBookPreview(newItems, resultSlicedObject);
 
     document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1
 
