@@ -6,7 +6,7 @@ let matches = books
 const starting = document.createDocumentFragment()
 createBookPreview(starting, matches)       //use the createBookPreview 
 
-function createBookPreview(fragment,bookObject){            //CreateBookPreview function
+function createBookPreview(fragment, bookObject){            //CreateBookPreview function
     for (const { author, id, image, title } of bookObject.slice(0, BOOKS_PER_PAGE)) {              
         const element = document.createElement('button')
         element.classList = 'preview'
@@ -149,27 +149,8 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     document.querySelector('[data-list-items]').innerHTML = ''
     const newItems = document.createDocumentFragment()
     // replace the for loop  for newItems , use the createBookPreview
-    for (const { author, id, image, title } of result.slice(0, BOOKS_PER_PAGE)) {
-        const element = document.createElement('button')
-        element.classList = 'preview'
-        element.setAttribute('data-preview', id)
+    createBookPreview(newItems, result);
     
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
-
-        newItems.appendChild(element)
-    }
-
-    document.querySelector('[data-list-items]').appendChild(newItems)
     document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1
 
     document.querySelector('[data-list-button]').innerHTML = `
