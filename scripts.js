@@ -2,44 +2,9 @@ import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
 
 let page = 1;
 let matches = books
-
 const starting = document.createDocumentFragment()
 const startingSlicedObject =  matches.slice(0, BOOKS_PER_PAGE)
 createBookPreview(starting, startingSlicedObject)       //use the createBookPreview 
-
-function createBookPreview(fragment, slicedObject){            //CreateBookPreview function
-    for (const { author, id, image, title } of slicedObject) {              
-        const element = document.createElement('button')
-        element.classList = 'preview'
-        element.setAttribute('data-preview', id)
-    
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
-    
-        fragment.appendChild(element)
-    }
-    document.querySelector('[data-list-items]').appendChild(fragment)
-}
-
-function createObjectEntries(objectWithEntries, fragment){            // refactor the for loop to use it multiple times withput repetiton
-
-    for (const [id, name] of Object.entries(objectWithEntries)) {
-        const element = document.createElement('option')
-        element.value = id
-        element.innerText = name
-        fragment.appendChild(element)
-    }
-
-}
 
 const genreHtml = document.createDocumentFragment()
 const firstGenreElement = document.createElement('option')
@@ -63,20 +28,6 @@ createObjectEntries(authors,authorsHtml);
 
 document.querySelector('[data-search-authors]').appendChild(authorsHtml);
 
-// Function that changes the theme of the webpage
-function changeTheme(theme){
-
-    if(theme === 'night'){
-        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
-
-    }
-    else{
-        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
-    }
-
-}
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.querySelector('[data-settings-theme]').value = 'night'
@@ -185,6 +136,58 @@ document.querySelector('[data-list-button]').addEventListener('click', () => {
     createBookPreview(fragment,fragmentSlicedObject)
     page += 1
 })
+//-------------------------------------------Abstracted code-------------------------------------------------------
+
+function createBookPreview(fragment, slicedObject){            //CreateBookPreview function
+    for (const { author, id, image, title } of slicedObject) {              
+        const element = document.createElement('button')
+        element.classList = 'preview'
+        element.setAttribute('data-preview', id)
+    
+        element.innerHTML = `
+            <img
+                class="preview__image"
+                src="${image}"
+            />
+            
+            <div class="preview__info">
+                <h3 class="preview__title">${title}</h3>
+                <div class="preview__author">${authors[author]}</div>
+            </div>
+        `
+    
+        fragment.appendChild(element)
+    }
+    document.querySelector('[data-list-items]').appendChild(fragment)
+}
+// refactor the for loop to use it multiple times without repetiton
+
+function createObjectEntries(objectWithEntries, fragment){            
+
+    for (const [id, name] of Object.entries(objectWithEntries)) {
+        const element = document.createElement('option')
+        element.value = id
+        element.innerText = name
+        fragment.appendChild(element)
+    }
+
+}
+
+// Function that changes the theme of the webpage
+function changeTheme(theme){
+
+    if(theme === 'night'){
+        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
+        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+
+    }
+    else{
+        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
+        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+    }
+
+}
+//-------------------------------------------Abstracted code-------------------------------------------------------
 
 document.querySelector('[data-list-items]').addEventListener('click', (event) => {
     const pathArray = Array.from(event.path || event.composedPath())
