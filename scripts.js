@@ -61,18 +61,29 @@ authorsHtml.appendChild(firstAuthorElement)
 //use createObject entries function
 createObjectEntries(authors,authorsHtml);
 
+document.querySelector('[data-search-authors]').appendChild(authorsHtml);
 
+// Function that changes the theme of the webpage
+function changeTheme(theme){
 
-document.querySelector('[data-search-authors]').appendChild(authorsHtml)
+    if(theme === 'night'){
+        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
+        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+
+    }
+    else{
+        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
+        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+    }
+
+}
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.querySelector('[data-settings-theme]').value = 'night'
-    document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-    document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+    changeTheme('night');   //use changeTheme function
 } else {
     document.querySelector('[data-settings-theme]').value = 'day'
-    document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-    document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+    changeTheme('day');   //use changeTheme function
 }
 
 document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
@@ -110,11 +121,9 @@ document.querySelector('[data-settings-form]').addEventListener('submit', (event
     const { theme } = Object.fromEntries(formData)
 
     if (theme === 'night') {
-        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+        changeTheme('night');
     } else {
-        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+       changeTheme('day');
     }
     
     document.querySelector('[data-settings-overlay]').open = false
