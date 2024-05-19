@@ -17,6 +17,7 @@ function createGenreOptions() {
     createObjectEntries(genres, genreFragment);     // Create the rest of the genre options using the createObjectEntries function
     document.querySelector('[data-search-genres]').appendChild(genreFragment);    // Append the "All Genres" option to the fragment
 }
+//call function
 createGenreOptions();
 
 // Create author options
@@ -29,17 +30,24 @@ function createAuthorOptions() {
     createObjectEntries(authors, authorFragment);          // Create the rest of the author options using the createObjectEntries function
     document.querySelector('[data-search-authors]').appendChild(authorFragment);    // Append the author options to the search authors element
 }
-
+//call function
 createAuthorOptions(); 
 
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.querySelector('[data-settings-theme]').value = 'night'
-    changeTheme('night');   //use changeTheme function
-} else {
-    document.querySelector('[data-settings-theme]').value = 'day'
-    changeTheme('day');   //use changeTheme function
-}
+// Function to set the theme based on the user's preferred color scheme
+function setThemeBasedOnUserPreference() {
+    // Check if the window.matchMedia API is supported
+    if (window.matchMedia) {
+      // Use the ternary operator to set the theme based on the user's preference
+      document.querySelector('[data-settings-theme]').value = 
+        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
+      // Use the changeTheme function to apply the selected theme
+      changeTheme(document.querySelector('[data-settings-theme]').value);
+    }
+  }
+  
+// Call the function to set the theme
+setThemeBasedOnUserPreference();
 
 document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
 document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
