@@ -93,34 +93,6 @@ document.querySelector('[data-list-close]').addEventListener('click', () => {
     document.querySelector('[data-list-active]').open = false
 })
 //---------------------------event listeners ------------------------------------------------------
-
-// Function to filter books based on the given filters
-function filterBooks(books, filters) {
-    const result = [];
-  
-    for (const book of books) {
-      let genreMatch = filters.genre === 'any';
-  
-      for (const singleGenre of book.genres) {
-        if (genreMatch) break;
-        if (singleGenre === filters.genre) {
-          genreMatch = true;
-        }
-      }
-  
-      if (
-        (filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase())) &&
-        (filters.author === 'any' || book.author === filters.author) &&
-        genreMatch
-      ) {
-        result.push(book);
-      }
-    }
-  
-    return result;
-  }
-
-
 document.querySelector('[data-settings-form]').addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
@@ -171,6 +143,31 @@ document.querySelector('[data-list-button]').addEventListener('click', () => {
     
   });
 //-------------------------------------------Abstracted code-------------------------------------------------------
+// Function to filter books based on the given filters
+function filterBooks(books, filters) {
+    const result = [];
+  
+    for (const book of books) {
+      let genreMatch = filters.genre === 'any';
+  
+      for (const singleGenre of book.genres) {
+        if (genreMatch) break;
+        if (singleGenre === filters.genre) {
+          genreMatch = true;
+        }
+      }
+  
+      if (
+        (filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase())) &&
+        (filters.author === 'any' || book.author === filters.author) &&
+        genreMatch
+      ) {
+        result.push(book);
+      }
+    }
+  
+    return result;
+  }
 
 function createBookPreview(fragment, slicedObject){            //CreateBookPreview function
     for (const { author, id, image, title } of slicedObject) {              
@@ -219,7 +216,6 @@ document.querySelector('[data-list-items]').addEventListener('click', (event) =>
 
     for (const node of pathArray) {
         // If the active flag is already set, exit the loop
-        if (active) break;
       
         // Get the preview ID from the node's dataset
         const previewId = node?.dataset?.preview;
