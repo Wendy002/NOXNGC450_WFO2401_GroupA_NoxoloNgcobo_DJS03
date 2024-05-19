@@ -17,17 +17,20 @@ function createGenreOptions() {
     createObjectEntries(genres, genreFragment);     // Create the rest of the genre options using the createObjectEntries function
     document.querySelector('[data-search-genres]').appendChild(genreFragment);    // Append the "All Genres" option to the fragment
 }
+createGenreOptions();
 
-const authorsHtml = document.createDocumentFragment()
-const firstAuthorElement = document.createElement('option')
-firstAuthorElement.value = 'any'
-firstAuthorElement.innerText = 'All Authors'
-authorsHtml.appendChild(firstAuthorElement)
+// Create author options
+function createAuthorOptions() {
+    const authorFragment = document.createDocumentFragment();    // Create a document fragment to hold the author options
+    const firstAuthorElement = document.createElement('option');
+    firstAuthorElement.value = 'any';
+    firstAuthorElement.innerText = 'All Authors';             // Create the "All Authors" option element
+    authorFragment.appendChild(firstAuthorElement);  // Append the "All Authors" option to the fragment
+    createObjectEntries(authors, authorFragment);          // Create the rest of the author options using the createObjectEntries function
+    document.querySelector('[data-search-authors]').appendChild(authorFragment);    // Append the author options to the search authors element
+}
 
-//use createObject entries function
-createObjectEntries(authors,authorsHtml);
-
-document.querySelector('[data-search-authors]').appendChild(authorsHtml);
+createAuthorOptions(); 
 
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
