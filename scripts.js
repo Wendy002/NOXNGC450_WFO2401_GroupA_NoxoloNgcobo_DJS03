@@ -67,10 +67,10 @@ function updateShowMoreButton() {
       <span>Show more</span>
       <span class="list__remaining"> (${remainingBooks > 0 ? remainingBooks : 0})</span>
     `;
-  }
+}
   
   // Call the function to update the button
-  updateShowMoreButton();
+updateShowMoreButton();
 //------------------------------event  listeners-------------------------------------------
 document.querySelector('[data-search-cancel]').addEventListener('click', () => {
     document.querySelector('[data-search-overlay]').open = false
@@ -137,6 +137,7 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     const filters = Object.fromEntries(formData)
 
     matches = filterBooks(books,filters) // use filterBooks function withh given form data filter
+    page = 1;
     if (result.length < 1) {
         document.querySelector('[data-list-message]').classList.add('list__message_show')
     } else {
@@ -149,21 +150,26 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     // replace the for loop  for newItems , use the createBookPreview
     createBookPreview(newItems, resultSlicedObject);
     //call updateshowmore function 
+
     updateShowMoreButton();
 
     window.scrollTo({top: 0, behavior: 'smooth'});
     document.querySelector('[data-search-overlay]').open = false
 })
 
+// Select the "Show more" button element
 document.querySelector('[data-list-button]').addEventListener('click', () => {
-    const fragment = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment(); 
+    // Slice the matches array to get the next set of books to display
     const fragmentSlicedObject = matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE);
-    // replace the for loop  for this fragment , use the createBookPreview
-    createBookPreview(fragment,fragmentSlicedObject)
-    page += 1
-    //updates the "Show more button
-    updateShowMoreButton();
-})
+    
+    // Create the book preview elements for the sliced object and append them to the fragment
+    createBookPreview(fragment, fragmentSlicedObject);
+    
+    // Increment the page number to keep track of which books to display next
+    page += 1;
+    
+  });
 //-------------------------------------------Abstracted code-------------------------------------------------------
 
 function createBookPreview(fragment, slicedObject){            //CreateBookPreview function
