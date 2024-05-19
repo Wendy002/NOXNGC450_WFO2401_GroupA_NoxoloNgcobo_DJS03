@@ -49,13 +49,28 @@ function setThemeBasedOnUserPreference() {
 // Call the function to set the theme
 setThemeBasedOnUserPreference();
 
-document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
-document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
+// Function to update the "Show more" button
+function updateShowMoreButton() {
 
-document.querySelector('[data-list-button]').innerHTML = `
-    <span>Show more</span>
-    <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
-`
+    const button = document.querySelector('[data-list-button]');
+    
+    // Calculate the number of remaining books
+    const remainingBooks = matches.length - (page * BOOKS_PER_PAGE);
+    
+    // Update the button text to show the number of remaining books
+    button.innerText = `Show more (${remainingBooks > 0 ? remainingBooks : 0})`;
+    
+    // Disable the button if there are no more books to show
+    button.disabled = remainingBooks <= 0;
+    
+    button.innerHTML = `
+      <span>Show more</span>
+      <span class="list__remaining"> (${remainingBooks > 0 ? remainingBooks : 0})</span>
+    `;
+  }
+  
+  // Call the function to update the button
+  updateShowMoreButton();
 
 document.querySelector('[data-search-cancel]').addEventListener('click', () => {
     document.querySelector('[data-search-overlay]').open = false
