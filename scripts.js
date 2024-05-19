@@ -2,20 +2,21 @@ import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
 
 let page = 1;
 let matches = books
+
 const starting = document.createDocumentFragment()
 const startingSlicedObject =  matches.slice(0, BOOKS_PER_PAGE)
 createBookPreview(starting, startingSlicedObject)       //use the createBookPreview 
 
-const genreHtml = document.createDocumentFragment()
-const firstGenreElement = document.createElement('option')
-firstGenreElement.value = 'any'
-firstGenreElement.innerText = 'All Genres'
-genreHtml.appendChild(firstGenreElement)
-//use createObject entries function
-createObjectEntries(genres,genreHtml);
-
-
-document.querySelector('[data-search-genres]').appendChild(genreHtml)
+// Create genre options
+function createGenreOptions() {
+    const genreFragment = document.createDocumentFragment();                 // Create a document fragment to hold the genre options
+    const firstGenreElement = document.createElement('option');              // Create the "All Genres" option element
+    firstGenreElement.value = 'any';                                                                                                            
+    firstGenreElement.innerText = 'All Genres';                  
+    genreFragment.appendChild(firstGenreElement);    // Append the genre options to the search genres element
+    createObjectEntries(genres, genreFragment);     // Create the rest of the genre options using the createObjectEntries function
+    document.querySelector('[data-search-genres]').appendChild(genreFragment);    // Append the "All Genres" option to the fragment
+}
 
 const authorsHtml = document.createDocumentFragment()
 const firstAuthorElement = document.createElement('option')
@@ -71,12 +72,7 @@ document.querySelector('[data-settings-form]').addEventListener('submit', (event
     const formData = new FormData(event.target)
     const { theme } = Object.fromEntries(formData)
 
-    if (theme === 'night') {
-        changeTheme('night');
-    } else {
-       changeTheme('day');
-    }
-    
+    changeTheme(theme == 'night'? 'night':'day')   //use the change theme function   
     document.querySelector('[data-settings-overlay]').open = false
 })
 
@@ -103,7 +99,6 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
         }
     }
 
-    page = 1;
     matches = result
 
     if (result.length < 1) {
@@ -118,7 +113,7 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     // replace the for loop  for newItems , use the createBookPreview
     createBookPreview(newItems, resultSlicedObject);
 
-    document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1
+    document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 0
 
     document.querySelector('[data-list-button]').innerHTML = `
         <span>Show more</span>
@@ -194,19 +189,17 @@ document.querySelector('[data-list-items]').addEventListener('click', (event) =>
     let active = null
 
     for (const node of pathArray) {
-        if (active) break
-
-        if (node?.dataset?.preview) {
-            let result = null
-    
-            for (const singleBook of books) {
-                if (result) break;
-                if (singleBook.id === node?.dataset?.preview) result = singleBook
-            } 
-        
-            active = result
+        // If the active flag is already set, exit the loop
+        if (active) break;
+      
+        // Get the preview ID from the node's dataset
+        const previewId = node?.dataset?.preview;
+        // If a preview ID is found
+        if (previewId) {
+          // Find the book with the matching ID and set it as the active book
+          active = books.find((book) => book.id === previewId);
         }
-    }
+      }
     
     if (active) {
         document.querySelector('[data-list-active]').open = true
