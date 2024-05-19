@@ -192,6 +192,19 @@ function createBookPreview(fragment, slicedObject){            //CreateBookPrevi
     document.querySelector('[data-list-items]').appendChild(fragment)
 }
 
+// refactor the for loop to use it multiple times without repetiton
+
+function createObjectEntries(objectWithEntries, fragment){            
+
+    for (const [id, name] of Object.entries(objectWithEntries)) {
+        const element = document.createElement('option')
+        element.value = id
+        element.innerText = name
+        fragment.appendChild(element)
+    }
+
+}
+
 
 // Function that changes the theme of the webpage
 function changeTheme(theme){
