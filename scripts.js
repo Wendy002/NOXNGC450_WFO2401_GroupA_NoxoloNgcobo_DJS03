@@ -71,7 +71,7 @@ function updateShowMoreButton() {
   
   // Call the function to update the button
   updateShowMoreButton();
-
+//------------------------------event  listeners-------------------------------------------
 document.querySelector('[data-search-cancel]').addEventListener('click', () => {
     document.querySelector('[data-search-overlay]').open = false
 })
@@ -92,6 +92,34 @@ document.querySelector('[data-header-settings]').addEventListener('click', () =>
 document.querySelector('[data-list-close]').addEventListener('click', () => {
     document.querySelector('[data-list-active]').open = false
 })
+//---------------------------event listeners ------------------------------------------------------
+
+// Function to filter books based on the given filters
+function filterBooks(books, filters) {
+    const result = [];
+  
+    for (const book of books) {
+      let genreMatch = filters.genre === 'any';
+  
+      for (const singleGenre of book.genres) {
+        if (genreMatch) break;
+        if (singleGenre === filters.genre) {
+          genreMatch = true;
+        }
+      }
+  
+      if (
+        (filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase())) &&
+        (filters.author === 'any' || book.author === filters.author) &&
+        genreMatch
+      ) {
+        result.push(book);
+      }
+    }
+  
+    return result;
+  }
+
 
 document.querySelector('[data-settings-form]').addEventListener('submit', (event) => {
     event.preventDefault()
@@ -102,31 +130,13 @@ document.querySelector('[data-settings-form]').addEventListener('submit', (event
     document.querySelector('[data-settings-overlay]').open = false
 })
 
+
 document.querySelector('[data-search-form]').addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
     const filters = Object.fromEntries(formData)
-    const result = []
 
-    for (const book of books) {
-        let genreMatch = filters.genre === 'any'
-
-        for (const singleGenre of book.genres) {
-            if (genreMatch) break;
-            if (singleGenre === filters.genre) { genreMatch = true }
-        }
-
-        if (
-            (filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase())) && 
-            (filters.author === 'any' || book.author === filters.author) && 
-            genreMatch
-        ) {
-            result.push(book)
-        }
-    }
-
-    matches = result
-
+    matches = filterBooks(books,filters) // use filterBooks function withh given form data filter
     if (result.length < 1) {
         document.querySelector('[data-list-message]').classList.add('list__message_show')
     } else {
@@ -151,6 +161,8 @@ document.querySelector('[data-list-button]').addEventListener('click', () => {
     // replace the for loop  for this fragment , use the createBookPreview
     createBookPreview(fragment,fragmentSlicedObject)
     page += 1
+    //updates the "Show more button
+    updateShowMoreButton();
 })
 //-------------------------------------------Abstracted code-------------------------------------------------------
 
