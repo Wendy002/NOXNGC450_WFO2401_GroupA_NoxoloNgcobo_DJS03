@@ -138,13 +138,8 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     const resultSlicedObject = result.slice(0, BOOKS_PER_PAGE);
     // replace the for loop  for newItems , use the createBookPreview
     createBookPreview(newItems, resultSlicedObject);
-
-    document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 0
-
-    document.querySelector('[data-list-button]').innerHTML = `
-        <span>Show more</span>
-        <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
-    `
+    //call updateshowmore function 
+    updateShowMoreButton();
 
     window.scrollTo({top: 0, behavior: 'smooth'});
     document.querySelector('[data-search-overlay]').open = false
@@ -181,18 +176,7 @@ function createBookPreview(fragment, slicedObject){            //CreateBookPrevi
     }
     document.querySelector('[data-list-items]').appendChild(fragment)
 }
-// refactor the for loop to use it multiple times without repetiton
 
-function createObjectEntries(objectWithEntries, fragment){            
-
-    for (const [id, name] of Object.entries(objectWithEntries)) {
-        const element = document.createElement('option')
-        element.value = id
-        element.innerText = name
-        fragment.appendChild(element)
-    }
-
-}
 
 // Function that changes the theme of the webpage
 function changeTheme(theme){
@@ -209,6 +193,7 @@ function changeTheme(theme){
 
 }
 //-------------------------------------------Abstracted code-------------------------------------------------------
+
 
 document.querySelector('[data-list-items]').addEventListener('click', (event) => {
     const pathArray = Array.from(event.path || event.composedPath())
