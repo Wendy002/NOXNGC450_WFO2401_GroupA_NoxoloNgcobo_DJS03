@@ -18,10 +18,10 @@
 - Any challenges faced during the refactoring process and how they were overcome.
 **challenges**
     - It was difficult to identify pieces of code that goes together
-    - This resulted in lot of bugs when tring to created functions for certain parts
+    - This resulted in lot of bugs when tring to use created functions for certain parts
     - over refactoring
 **solution**
-    - looked at the html code , the website it self to try finf pieces of code that goes together
+    - looked at the html code , the website it self to try find pieces of code that goes together
     - only refactored code that needed to be refactored
 
 - Reflections on how this exercise has deepened your understanding of JavaScript programming concepts.
